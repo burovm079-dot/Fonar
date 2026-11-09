@@ -95,7 +95,6 @@ export default function App() {
   const { isOn, busy, error, turnOn, turnOff } = useTorch();
   const [showInfo, setShowInfo] = useState(false);
   const [showPro, setShowPro] = useState(false);
-  const [proHint, setProHint] = useState("РАЗБЛОКИРОВАТЬ PRO");
   const proTapRef = useRef(0);
   const toggle = () => { if (busy) return; if (isOn) setShowPro(true); else void turnOn(); };
   const handleProTap = () => {
@@ -103,11 +102,9 @@ export default function App() {
     if (now - proTapRef.current < 1200) {
       proTapRef.current = 0;
       setShowPro(false);
-      setProHint("РАЗБЛОКИРОВАТЬ PRO");
       void turnOff();
     } else {
       proTapRef.current = now;
-      setProHint("НАЖМИ ЕЩЁ РАЗ");
     }
   };
 
@@ -152,9 +149,8 @@ export default function App() {
               <h2 id="pro-title">Включение фонарика было бесплатным</h2>
               <p>Выключение — только с PRO-подпиской</p>
               <strong className="pro-price">19.99$</strong>
-              <button className="pro-unlock" onClick={handleProTap}>{proHint}</button>
+              <button className="pro-unlock" onClick={handleProTap}>РАЗБЛОКИРОВАТЬ PRO</button>
               <p className="pro-demo-note">Демонстрационный экран. Оплата не производится.</p>
-              <button className="pro-safe-off" onClick={() => { setShowPro(false); void turnOff(); }}>Выключить сейчас бесплатно</button>
             </motion.div>
           </motion.div>
         )}
