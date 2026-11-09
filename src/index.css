@@ -56,3 +56,15 @@ h1 span{color:var(--gold-bright)}.subtitle{margin:0;color:#9296a0;font-size:14px
 @media(max-width:520px){.app{padding:20px 18px 15px}.hero{margin-top:clamp(38px,7vh,62px)}h1{font-size:49px;letter-spacing:-2.8px}.subtitle{font-size:12px}.torch-stage{height:clamp(285px,37vh,340px);margin-top:10px}.power-control{width:174px;height:174px}.orbit-a{width:245px;height:245px}.orbit-b{width:300px;height:300px}.feature-row{padding:14px 8px;gap:7px;margin-top:14px;margin-bottom:20px}.feature{gap:7px}.feature-icon{width:29px;height:29px}.feature strong{font-size:9px}.feature small{font-size:8px}.feature-divider{height:24px}.footer-bottom{font-size:7px;letter-spacing:.8px}}
 @media(max-height:760px) and (max-width:520px){.hero{margin-top:28px}h1{font-size:43px}.torch-stage{height:260px}.power-control{width:158px;height:158px}.orbit-a{width:220px;height:220px}.orbit-b{width:270px;height:270px}.feature-row{margin-top:6px;margin-bottom:12px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+.pro-overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:22px;background:rgba(3,5,9,.78);backdrop-filter:blur(12px)}
+.pro-dialog{width:min(100%,390px);padding:30px 25px 24px;border:1px solid rgba(246,189,98,.25);border-radius:23px;background:linear-gradient(155deg,#22232a,#11141b 72%);box-shadow:0 28px 90px #000b;text-align:center}
+.pro-kicker{color:var(--gold);font-size:9px;font-weight:800;letter-spacing:2.5px}
+.pro-dialog h2{margin:17px 0 10px;color:#f4f2ec;font-family:Manrope,sans-serif;font-size:23px;line-height:1.2;letter-spacing:-.7px}
+.pro-dialog p{margin:0;color:#a6a8af;font-size:12px;line-height:1.55}
+.pro-price{display:block;margin:17px 0 20px;color:var(--gold-bright);font-size:30px;letter-spacing:-1px}
+.pro-unlock{width:100%;min-height:48px;padding:12px 15px;border:0;border-radius:13px;background:linear-gradient(135deg,#ffdc9d,#d99843);color:#21180e;font-size:10px;font-weight:900;letter-spacing:1.1px;cursor:pointer}
+.pro-demo-note{margin-top:12px!important;color:#777d88!important;font-size:10px!important}
+.pro-safe-off{margin-top:15px;padding:10px 12px;border:1px solid #ffffff26;border-radius:11px;background:transparent;color:#e4e2dc;font-size:11px;cursor:pointer}
+.pro-unlock:focus-visible,.pro-safe-off:focus-visible{outline:2px solid var(--gold-bright);outline-offset:3px}
