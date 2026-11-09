@@ -150,7 +150,6 @@ export default function App() {
               <p>Выключение — только с PRO-подпиской</p>
               <strong className="pro-price">19.99$</strong>
               <button className="pro-unlock" onClick={handleProTap}>РАЗБЛОКИРОВАТЬ PRO</button>
-              <p className="pro-demo-note">Демонстрационный экран. Оплата не производится.</p>
             </motion.div>
           </motion.div>
         )}
