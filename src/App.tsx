@@ -94,7 +94,22 @@ const rise = {
 export default function App() {
   const { isOn, busy, error, turnOn, turnOff } = useTorch();
   const [showInfo, setShowInfo] = useState(false);
-  const toggle = () => { if (busy) return; if (isOn) void turnOff(); else void turnOn(); };
+  const [showPro, setShowPro] = useState(false);
+  const [proHint, setProHint] = useState("РАЗБЛОКИРОВАТЬ PRO");
+  const proTapRef = useRef(0);
+  const toggle = () => { if (busy) return; if (isOn) setShowPro(true); else void turnOn(); };
+  const handleProTap = () => {
+    const now = Date.now();
+    if (now - proTapRef.current < 1200) {
+      proTapRef.current = 0;
+      setShowPro(false);
+      setProHint("РАЗБЛОКИРОВАТЬ PRO");
+      void turnOff();
+    } else {
+      proTapRef.current = now;
+      setProHint("НАЖМИ ЕЩЁ РАЗ");
+    }
+  };
 
   return (
     <main className={`app ${isOn ? "is-lit" : ""}`}>
@@ -128,6 +143,22 @@ export default function App() {
             : <motion.div className="trust-note" key="trust" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><ShieldCheck size={15} /><span>Бесплатно. Без регистрации. Выключение доступно всегда.</span></motion.div>}
         </AnimatePresence>
       </section>
+
+      <AnimatePresence>
+        {showPro && isOn && (
+          <motion.div className="pro-overlay" role="dialog" aria-modal="true" aria-labelledby="pro-title" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div className="pro-dialog" initial={{ opacity: 0, y: 18, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: 0.98 }}>
+              <span className="pro-kicker">FONAR PREMIUM</span>
+              <h2 id="pro-title">Включение фонарика было бесплатным</h2>
+              <p>Выключение — только с PRO-подпиской</p>
+              <strong className="pro-price">19.99$</strong>
+              <button className="pro-unlock" onClick={handleProTap}>{proHint}</button>
+              <p className="pro-demo-note">Демонстрационный экран. Оплата не производится.</p>
+              <button className="pro-safe-off" onClick={() => { setShowPro(false); void turnOff(); }}>Выключить сейчас бесплатно</button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <section className="feature-row">
         <div className="feature"><span className="feature-icon"><Zap size={17} /></span><span><strong>Мгновенно</strong><small>Один тап</small></span></div>
