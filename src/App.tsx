@@ -55,9 +55,6 @@ function useTorch() {
       trackRef.current = track;
       streamRef.current = stream;
       setIsOn(true);
-      if ("wakeLock" in navigator) {
-        try { await navigator.wakeLock.request("screen"); } catch { /* Optional browser feature. */ }
-      }
     } catch (cause) {
       if (cause instanceof DOMException && cause.name === "NotAllowedError") {
         setError("Разрешите доступ к камере в настройках браузера и попробуйте ещё раз.");
