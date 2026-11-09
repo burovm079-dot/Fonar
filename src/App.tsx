@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Flashlight, ShieldCheck, Zap, BatteryFull, ChevronDown, Check, Sparkles } from "lucide-react";
+import { Capacitor } from "@capacitor/core";
+import { Torch } from "@capawesome/capacitor-torch";
 
 type TorchCaps = MediaTrackCapabilities & { torch?: boolean };
 type TorchConstraint = MediaTrackConstraintSet & { torch?: boolean };
@@ -11,10 +13,16 @@ function useTorch() {
   const [isOn, setIsOn] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const isNative = Capacitor.isNativePlatform();
 
   const turnOff = useCallback(async () => {
     setBusy(true);
     try {
+      if (isNative) {
+        await Torch.disable();
+        setIsOn(false);
+        return;
+      }
       const track = trackRef.current;
       if (track?.readyState === "live") {
         try { await track.applyConstraints({ advanced: [{ torch: false } as TorchConstraint] }); }
@@ -27,13 +35,20 @@ function useTorch() {
       setIsOn(false);
       setBusy(false);
     }
-  }, []);
+  }, [isNative]);
 
   const turnOn = useCallback(async () => {
     if (busy || isOn) return;
     setBusy(true);
     setError("");
     try {
+      if (isNative) {
+        const availability = await Torch.isAvailable();
+        if (!availability.available) throw new Error("На этом устройстве нет вспышки.");
+        await Torch.enable();
+        setIsOn(true);
+        return;
+      }
       if (!navigator.mediaDevices?.getUserMedia) {
         throw new Error("Откройте сайт по HTTPS в современном браузере.");
       }
@@ -64,9 +79,14 @@ function useTorch() {
     } finally {
       setBusy(false);
     }
-  }, [busy, isOn]);
+  }, [busy, isOn, isNative]);
 
   useEffect(() => {
+    if (isNative) {
+      let active = true;
+      void Torch.isEnabled().then(({ enabled }) => { if (active) setIsOn(enabled); }).catch(() => {});
+      return () => { active = false; };
+    }
     const stop = () => {
       streamRef.current?.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
@@ -81,7 +101,7 @@ function useTorch() {
       window.removeEventListener("pagehide", stop);
       stop();
     };
-  }, []);
+  }, [isNative]);
 
   return { isOn, busy, error, turnOn, turnOff };
 }
