@@ -102,7 +102,7 @@ export default function App() {
       <div className="ambient ambient-two" />
       <div className="grain" />
       <header className="topbar">
-        <a className="brand" href="/"><span className="brand-mark"><Flashlight size={19} /></span><span>FONAR<span className="brand-dot">.</span></span></a>
+        <a className="brand" href="./"><span className="brand-mark"><Flashlight size={19} /></span><span>FONAR<span className="brand-dot">.</span></span></a>
         <div className="top-status"><span className={`status-dot ${isOn ? "online" : ""}`} />{isOn ? "СВЕТ ВКЛЮЧЁН" : "ГОТОВ К РАБОТЕ"}</div>
       </header>
 
